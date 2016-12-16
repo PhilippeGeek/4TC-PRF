@@ -29,7 +29,7 @@ $cbr0 attach-agent $udp00
 
 set cbr1 [new Application/Traffic/CBR]
 $cbr1 set rate_ 1.8Mb
-$cbr1 set packetSize_ 3775
+$cbr1 set packetSize_ 450
 $cbr1 set maxpkts_ 5000
 $cbr1 attach-agent $udp01
 

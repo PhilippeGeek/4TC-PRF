@@ -1,6 +1,6 @@
 BEGIN {
 	start = 5 # second
-	timestep = 0.5 # second
+	timestep = 0.1 # second
 	nextstep = start + timestep;
 }
 
@@ -17,15 +17,17 @@ BEGIN {
 				avg_delay = 0;
 			}
 
-			printf("%6.2f %4d %8d %8d %10.6f\n",
+			printf("%6.2f %4d %8d %8d %10.10f %10.10f %10.6f\n",
 			       nextstep, f, (bytes_tx[f]*8)/(timestep*1000),
-			       (bytes_rx[f]*8)/(timestep*1000), avg_delay);
+			       (bytes_rx[f]*8)/(timestep*1000), tx[f]+lost[f]+error[f]==0?0:lost[f]/(tx[f]+lost[f]+error[f]),  (tx[f]+lost[f]+error[f])==0?0:error[f]/(tx[f]+lost[f]+error[f]), avg_delay);
 
 			bytes_tx[f] = 0;
 			tx[f] = 0;
 			bytes_rx[f] = 0;
 			delay[f] = 0;
 			rx[f] = 0;
+			lost[f] = 0;
+			error[f] = 0;
 		}
 
 		nextstep = int($2/timestep)*timestep + timestep;
@@ -46,6 +48,14 @@ BEGIN {
 		bytes_rx[$8] += $6;
 		delay[$8] += $2 - time_buf[$12];
 		rx[$8]++;
+	}
+
+	if($1 == "d") {
+		lost[$8]++;
+	}
+
+	if($1 == "e") {
+		error[$8]++;
 	}
 
 }
