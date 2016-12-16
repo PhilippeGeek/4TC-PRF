@@ -1,6 +1,6 @@
 BEGIN {
 	start = 5 # second
-	timestep = 0.1 # second
+	timestep = 0.5 # second
 	nextstep = start + timestep;
 }
 
